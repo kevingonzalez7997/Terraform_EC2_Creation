@@ -4,11 +4,6 @@ provider "aws" {
   secret_key = ""
   region = "us-east-1"
 }
-# This is so we can let terraform know which VPC we would like to work with
-data "aws_vpc" "Deployment-4-vpc" {
-  id = "vpc-0ddd8b37b13bafc56"
-}
-
 # create instance
 resource "aws_instance" "Deployment4_ec2_2" {
   # input what OS ID you will use
@@ -25,7 +20,7 @@ resource "aws_instance" "Deployment4_ec2_2" {
   associate_public_ip_address = true
   # This will run "deploy.sh" when the EC2 is created
   user_data = "${file("deploy.sh")}"
-
+  # Because a security group can only be connected to one vpc, when we reference the security group terraform will know which vpc to use 
   tags = {
     "Name": "Deployment4_ec2_2"
   }
